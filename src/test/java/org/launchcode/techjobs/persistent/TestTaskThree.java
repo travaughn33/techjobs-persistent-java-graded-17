@@ -10,6 +10,8 @@ import org.launchcode.techjobs.persistent.controllers.HomeController;
 import org.launchcode.techjobs.persistent.models.AbstractEntity;
 import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Job;
+import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
+import org.launchcode.techjobs.persistent.models.data.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
@@ -147,36 +149,33 @@ public class TestTaskThree extends AbstractTest {
         assertNotNull(employerRepositoryField.getAnnotation(Autowired.class));
     }
 
-    /*
-     * Verifies that HomeController.displayAddJobForm calls employerRepository.findAll()
-     * */
-    // @Test
-    // public void testHomeControllerFetchesEmployers(@Mocked EmployerRepository employerRepository, @Mocked SkillRepository skillRepository) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
-    //     Class homeControllerClass = getClassByName("controllers.HomeController");
-    //     HomeController homeController = new HomeController();
+     // Verifies that HomeController.displayAddJobForm calls employerRepository.findAll()
 
-    //     Field employerRepositoryField = homeControllerClass.getDeclaredField("employerRepository");
-    //     employerRepositoryField.setAccessible(true);
-    //     employerRepositoryField.set(homeController, employerRepository);
+     @Test
+     public void testHomeControllerFetchesEmployers(@Mocked EmployerRepository employerRepository, @Mocked SkillRepository skillRepository) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException {
+         Class homeControllerClass = getClassByName("controllers.HomeController");
+         HomeController homeController = new HomeController();
 
-    //     // not needed for verification, but necessary to make sure calling the controller
-    //     // method doesn't throw a NullPointerException
-    //     Field skillRepositoryField = homeControllerClass.getDeclaredField("skillRepository");
-    //     skillRepositoryField.setAccessible(true);
-    //     skillRepositoryField.set(homeController, skillRepository);
+         Field employerRepositoryField = homeControllerClass.getDeclaredField("employerRepository");
+         employerRepositoryField.setAccessible(true);
+         employerRepositoryField.set(homeController, employerRepository);
 
-    //     Model model = new ExtendedModelMap();
+         // not needed for verification, but necessary to make sure calling the controller
+         // method doesn't throw a NullPointerException
+         Field skillRepositoryField = homeControllerClass.getDeclaredField("skillRepository");
+         skillRepositoryField.setAccessible(true);
+         skillRepositoryField.set(homeController, skillRepository);
 
-    //     new Expectations() {{
-    //         employerRepository.findAll();
-    //     }};
+         Model model = new ExtendedModelMap();
 
-    //     homeController.displayAddJobForm(model);
-    // }
+         new Expectations() {{
+             employerRepository.findAll();
+         }};
 
-    /*
-     * Tests SQL query for task 3
-     * */
+         homeController.displayAddJobForm(model);
+     }
+
+  //   * Tests SQL query for task //
     @Test
     public void testSqlQuery() throws IOException {
         String queryFileContents = getFileContents("queries.sql");
